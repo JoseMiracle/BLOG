@@ -90,6 +90,13 @@ Authorization: Bearer <jwt-token>
 To obtain a JWT token, send a `POST` request to the `/api/accounts/sign-in/` endpoint with valid user credentials. The response will include an access token and a refresh token. Access tokens are short-lived and can be used for authentication, while refresh tokens can be used to obtain new access tokens.
 
 
+# SECTION 1
+    To run the programs in the SECTION_1 folder, follow these steps:
+    
+    - Navigate to the SECTION_1 directory in your terminal or command prompt.
+    
+    - Type python file_name.py and press Enter to execute the program.
+
 ## Acknowledgments
 
 Special thanks to SkillsForge for giving me the task, I have been able to learn new things.
