@@ -107,16 +107,13 @@ class ChangePasswordSerializer(serializers.Serializer):
             attrs["new_password"] == attrs["confirm_password"]
         ):
             return attrs
-
-    def update(self, instance, validated_data):
-        """
-        This is for updating user's password
-        """        
-        user = self.context["request"].user
-        user.set_password(validated_data["confirm_password"])
+    
+    def save(self, **kwargs):
+        user = self.context['request'].user
+        user.set_password(self.validated_data['confirm_password'])
         user.save()
+        return user 
 
-        return validated_data
     
 class UserSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=False)
@@ -130,3 +127,12 @@ class UserSerializer(serializers.ModelSerializer):
             'image',
         ]
 
+    def validate_username(self, value):
+        username = User.objects.filter(username=value)
+        
+        if username.exists():
+            raise serializers.ValidationError({
+                'message': f"{username} exists" 
+            })
+        
+        return value

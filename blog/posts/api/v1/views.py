@@ -40,6 +40,7 @@ class UpdatePostAPIView(generics.RetrieveUpdateAPIView):
         return super().get(request, *args, **kwargs)
     
     def put(self, request, *args, **kwargs):
+        self.check_object_permissions(request, obj=self.get_object()) # Checks if a user owns a post to be retrieved
         return super().put(request, *args, **kwargs)
     
 class DeletePostAPIView(generics.DestroyAPIView):
@@ -50,6 +51,7 @@ class DeletePostAPIView(generics.DestroyAPIView):
         return post_obj
     
     def delete(self, request, *args, **kwargs):
+        self.check_object_permissions(request, obj=self.get_object()) # Checks if a user owns a post to be retrieved        
         return super().delete(request, *args, **kwargs)
 
 class UserPostsAPIView(generics.ListAPIView):
@@ -68,11 +70,10 @@ class UserPostsAPIView(generics.ListAPIView):
             ).select_related('author')
         return user_posts
     
-    @method_decorator(cache_page(60 * 5), name='users_posts_five_mins_cache')
     def get(self, request, *args, **kwargs):
         return super().get(request, *args, **kwargs)
 
-class PostAPIView(generics.ListAPIView):
+class PublishedPostAPIView(generics.ListAPIView):
     """
         View for user to retrieve all published posts or a user
     """
@@ -85,7 +86,8 @@ class PostAPIView(generics.ListAPIView):
     def get_queryset(self):
         user = User.objects.filter(username=self.kwargs['username']).first()     
         user_posts = Post.objects.filter(
-             author=user
+             author=user,
+             post_state='published'
              )
         
         return user_posts
@@ -147,8 +149,10 @@ class EditCommentAPIView(generics.RetrieveUpdateAPIView):
         self.check_object_permissions(request, obj=self.get_object())
         return super().get(request, *args, **kwargs)
     
-
-
+    def put(self, request, *args, **kwargs):
+        self.check_object_permissions(request, obj=self.get_object())
+        return super().put(request, *args, **kwargs)
+    
 
 class PostReactionAPIView(generics.CreateAPIView):
     permission_classes = [permissions.IsAuthenticated]

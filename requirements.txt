@@ -6,6 +6,8 @@ drf-standardized-errors==0.13.0
 pillow==10.3.0
 psycopg2-binary==2.9.9
 django-filter==24.2
-
+pytest-factoryboy==2.6.0
+pytest-django==4.7.0
+coverage==7.5.1
 
 

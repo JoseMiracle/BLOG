@@ -39,7 +39,7 @@ class PostImage(BaseModel):
     image = models.ImageField(upload_to=post_images_upload_location)
 
     def __str__(self) -> str:
-        return super().__str__()
+        return self.image.name
 
 
 class PostComment(BaseModel):
@@ -82,4 +82,4 @@ class PostReaction(BaseModel):
     )
 
     def __str__(self) -> str:
-        return f"{self.comment_to_post} {self.reaction}"
+        return f"{self.reaction}"

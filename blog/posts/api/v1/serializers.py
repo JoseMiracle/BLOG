@@ -20,12 +20,12 @@ class PostImageSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
-    
     images = PostImageSerializer(many=True, read_only=True)
     uploaded_images = serializers.ListField(
         child=serializers.ImageField(required=False),
         required=False,
     )
+    author = UserSerializer(read_only=True)
     content = serializers.CharField(required=False)
 
     class Meta:
@@ -36,6 +36,7 @@ class PostSerializer(serializers.ModelSerializer):
             "content", 
             "category",
             "post_state",
+            "author",
             "content",
             "images", 
             "uploaded_images",
@@ -153,5 +154,5 @@ class PostReactionSerializer(serializers.ModelSerializer):
             post_reaction_obj.reaction = validated_data["reaction"]
             post_reaction_obj.save()
             return post_reaction_obj
-
-        return super().create(validated_data)
+        
+        return post_reaction_obj
