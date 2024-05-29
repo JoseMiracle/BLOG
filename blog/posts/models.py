@@ -79,7 +79,7 @@ class PostReaction(BaseModel):
     
     user_that_react = models.ForeignKey(User, on_delete=models.CASCADE)
     reaction = models.CharField(
-        max_length=80, null=False, blank=False, choices=REACTION_CHOICES
+        max_length=40, null=False, blank=False, choices=REACTION_CHOICES
     )
 
     def __str__(self) -> str:
